@@ -1,0 +1,18 @@
+#!/bin/sh
+cd /usr/flood
+exec /usr/flood/server/bin/www &
+
+sleep 10
+URL="http://${DOMAIN}/auth/register"
+echo "*****************************************************************************************"
+echo " Setting Username & Password for ${USERNAME}"
+echo " URL: ${URL}"
+echo "*****************************************************************************************"
+curl -X POST -H "Content-Type: application/json" -d '{"username":"'"${USERNAME}"'", "password": "'"${PASSWORD}"'"}' ${URL};
+
+echo "*****************************************************************************************"
+echo " Restarting Node/Flood "
+echo "*****************************************************************************************"
+
+kill -9 $(pgrep node)
+exec /usr/flood/server/bin/www
